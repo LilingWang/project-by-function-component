@@ -3,26 +3,46 @@
     justify-content: space-between;
     list-style: none;
     cursor: pointer;
+    margin-bottom: 40px;
   }
   
   .pagination a {
     padding: 10px;
     border-radius: 5px;
-    border: 1px solid #6c7ac9;
-    color: #6c7ac9;
+    border: 1px solid #4d4d4e;
+    color: #4d4d4e;
   }
   
   .pagination__link {
-    font-weight: bold;
+    font-size: small;
   }
   
   .pagination__link--active a {
     color: #fff;
-    background: #6c7ac9;
+    background: #233391;
   }
   
   .pagination__link--disabled a {
     color: rgb(198, 197, 202);
     border: 1px solid rgb(198, 197, 202);
   }
+
+  .btnContainer {
+     float: left;
+
+  }
+
+  .btnContainer button {
+     padding-top:5px;
+     padding-bottom: 5px;
+}
+
+.searchDiv_label {
+   text-align: left;
+   font-size: medium;
+}
+
+.searchDiv_input {
+    text-align: left;
+}
   

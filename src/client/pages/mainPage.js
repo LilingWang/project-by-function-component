@@ -5,8 +5,40 @@ import { useDispatch, useSelector } from 'react-redux';
 import { initUser, deleteUser, getUser } from "../actions";
 import ReactPaginate from "react-paginate";
 import "./style.css";
+import { MdOutlineImportExport, MdPersonAddAlt1 } from "react-icons/md";
 
-const PER_PAGE = 6;
+import styled from '@emotion/styled';
+
+const TableContainer = styled.div`
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    font-size: calc(6px + 2vmin);
+    td, th {
+         border: 1px solid #dddddd;
+         text-align: left;
+         padding: 8px;
+         border:none;
+         width:120px
+    }
+    th button {
+         border:none;
+         background-color:white;
+         font-family: arial, sans-serif;
+         font-weight:bold;
+         font-size: calc(6px + 2vmin);
+    }
+    tr:nth-child(even) {
+         background-color: #dddddd;
+    }
+
+    tr th {
+         fontWeight:100px;
+    }
+
+    tr {
+         border-bottom:2px solid lightgray;
+    }
+`;
 
 const MainPage = () => {
 
@@ -17,17 +49,19 @@ const MainPage = () => {
     const [userOffset, setUserOffset] = useState(0);
     const [currentUserlist, setCurrentUserlist] = useState(null);
     const [searchInput, setSearchInput] = useState();
+    const [sortDirection, setSortDirection] = useState(false);
+
     useEffect(() => {
         // initUser(dispatch)();
 
         const fetchData = async () => {
             const result = await axios("http://localhost:3002/users/getAll");
             setUserList(result.data);
-           const user = result.data;
+            const user = result.data;
             const endOffset = userOffset + itemsPerpage;
             setCurrentUserlist(user.slice(userOffset, endOffset));
 
-           // console.log(result.data);
+            // console.log(result.data);
         };
         fetchData();
     }, [userOffset]);
@@ -35,7 +69,7 @@ const MainPage = () => {
     useEffect(() => {
         initUser(dispatch)();
     });
-    
+
     const setPage = (event) => {
         const newOffset = (event.selected * itemsPerpage) % userList.length;
         setUserOffset(newOffset);
@@ -54,11 +88,11 @@ const MainPage = () => {
         window.location.href = "/EditUserPage/" + index;
     };
 
-    const searchInputBtn = (e) =>{
+    const searchInputBtn = (e) => {
         setSearchInput(e.target.value);
         let searchByName = [];
         userList.forEach((item) => {
-            if(item.FirstName.includes(searchInput)) {
+            if (item.FirstName.includes(searchInput)) {
                 searchByName.push(item)
             }
         }
@@ -66,28 +100,49 @@ const MainPage = () => {
         setCurrentUserlist(searchByName);
     }
 
+    const handleSort = e => {
+        const { name } = e.target;
+        setSortDirection(!sortDirection);
+
+        if (name === 'fn') {
+            const sortList = userList.sort((f1, f2) => f1.FirstName.localeCompare(f2.FirstName));
+            setCurrentUserlist(sortList.slice(0, 6))
+
+        } else if (name === 'ln') {
+            const sortList = userList.sort((f1, f2) => f1.LastName.localeCompare(f2.LastName));
+            setCurrentUserlist(sortList.slice(0, 6))
+        } else if (name === 'age') {
+            const sortList = userList.sort((a1, a2) => sortDirection ? a1.Age - a2.Age : a2.Age - a1.Age);
+            setCurrentUserlist(sortList.slice(0, 6))
+        };
+    }
+
     return (
         <div>
-        <div>
-            <label>Search:  </label>
-            <input 
-            type="text" 
-            placeholder="Search" 
-            value={searchInput} 
-            onChange={searchInputBtn}
-            
-            >
-           </input>
-        </div>
-            <table>
+        <h2>User List: </h2>
+            <div>
+
+                <label className="searchDiv_label">Search:  </label>
+                <input
+                    className="searchDiv_input"
+                    type="text"
+                    placeholder="Search"
+                    value={searchInput}
+                    onChange={searchInputBtn}
+
+                >
+                </input>
+
+            </div>
+            <TableContainer>
                 <thead>
                     <tr>
-                        <td>Edit</td>
-                        <td>Delete</td>
-                        <td>First Name</td>
-                        <td>Last Name</td>
-                        <td>Sex</td>
-                        <td>Age</td>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                        <th><button name="fn" className="btn-default" onClick={handleSort}>First Name<MdOutlineImportExport /> </button></th>
+                        <th><button name="ln" className="btn-default" onClick={handleSort}>Last Name<MdOutlineImportExport /> </button></th>
+                        <th>Sex</th>
+                        <th><button name="age" className="btn-default" onClick={handleSort}>Age<MdOutlineImportExport /> </button></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -99,7 +154,7 @@ const MainPage = () => {
                         handleEditBtn={handleEditBtn} />
 
                 </tbody>
-            </table>
+            </TableContainer>
             <ReactPaginate
                 ref={pagination}
                 pageCount={Math.ceil(userList.length / itemsPerpage)}
@@ -119,8 +174,10 @@ const MainPage = () => {
                 previousLabel={<>&laquo;previous</>}
                 nextLabel={<>&raquo;next</>}
             />
+            <div className="btnContainer">
+                <button onClick={() => { window.location.href = "/createNewUser" }}><MdPersonAddAlt1 />Create New User</button>
 
-            <button onClick={() => { window.location.href = "/createNewUser" }}>Create New User</button>
+            </div>
 
 
         </div>
