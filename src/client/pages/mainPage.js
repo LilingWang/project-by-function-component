@@ -12,27 +12,27 @@ import styled from '@emotion/styled';
 const TableContainer = styled.div`
     font-family: arial, sans-serif;
     border-collapse: collapse;
-    font-size: calc(6px + 2vmin);
+    font-size: calc(5px + 2vmin);
     td, th {
          border: 1px solid #dddddd;
          text-align: left;
          padding: 8px;
          border:none;
-         width:120px
+         width:130px
     }
     th button {
          border:none;
          background-color:white;
          font-family: arial, sans-serif;
          font-weight:bold;
-         font-size: calc(6px + 2vmin);
+         font-size: calc(5px + 2vmin);
     }
     tr:nth-child(even) {
          background-color: #dddddd;
     }
 
     tr th {
-         fontWeight:100px;
+         fontWeight:70px;
     }
 
     tr {
@@ -50,6 +50,7 @@ const MainPage = () => {
     const [currentUserlist, setCurrentUserlist] = useState(null);
     const [searchInput, setSearchInput] = useState();
     const [sortDirection, setSortDirection] = useState(false);
+    const [inputList, setInputList] = useState([]);
 
     useEffect(() => {
         // initUser(dispatch)();
@@ -60,8 +61,8 @@ const MainPage = () => {
             const user = result.data;
             const endOffset = userOffset + itemsPerpage;
             setCurrentUserlist(user.slice(userOffset, endOffset));
+            setInputList(currentUserlist);
 
-            // console.log(result.data);
         };
         fetchData();
     }, [userOffset]);
@@ -77,10 +78,9 @@ const MainPage = () => {
     }
 
     const handleDeleteBtn = (index) => () => {
-        // console.log(index)
-        window.alert("You are successful Delete user!");
+        //window.alert("You are successful Delete user!");
         deleteUser(dispatch)(index);
-        window.location.href = "/"
+        //window.location.href = "/"
     };
 
     const handleEditBtn = (index) => () => {
@@ -91,7 +91,8 @@ const MainPage = () => {
     const searchInputBtn = (e) => {
         setSearchInput(e.target.value);
         let searchByName = [];
-        userList.forEach((item) => {
+       // console.log(inputList,"test --99w48jer")
+        userList.slice(userOffset, userOffset + itemsPerpage).forEach((item) => {
             if (item.FirstName.includes(searchInput)) {
                 searchByName.push(item)
             }
@@ -105,7 +106,7 @@ const MainPage = () => {
         setSortDirection(!sortDirection);
 
         if (name === 'fn') {
-            const sortList = userList.sort((f1, f2) => f1.FirstName.localeCompare(f2.FirstName));
+            const sortList = userList.sort((f1, f2) => f1.FirstName.localeCompare(f2.FirstName)) ;
             setCurrentUserlist(sortList.slice(0, 6))
 
         } else if (name === 'ln') {
@@ -119,8 +120,8 @@ const MainPage = () => {
 
     return (
         <div>
-        <h2>User List: </h2>
-            <div>
+            <h2 style={{ textAlign: 'left' }}>User List: </h2>
+            <div style={{ textAlign: 'left' }}>
 
                 <label className="searchDiv_label">Search:  </label>
                 <input
@@ -146,7 +147,6 @@ const MainPage = () => {
                     </tr>
                 </thead>
                 <tbody>
-
 
                     <Table
                         userList={currentUserlist}

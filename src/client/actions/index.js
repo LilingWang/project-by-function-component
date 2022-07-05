@@ -31,6 +31,7 @@ export const addNewUser = (dispatch) => (value) =>{
             payload:value
 
         });
+        window.location.href = "/"
         
     })
     .catch((e)=>{
@@ -53,6 +54,8 @@ export const deleteUser = (dispatch) => (index) =>{
             type:DEL,
             payload:index,
         });
+        window.location.href = "/"
+
     })
     .catch((e) => {
         console.log("error")

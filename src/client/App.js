@@ -4,12 +4,13 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import MainPage from './pages/mainPage';
 import CreateNewUser from './pages/createNewUser';
 import EditUserPage from './pages/editUserPage';
+import ErrorBoundary from './errorBoundary';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-       
+      <ErrorBoundary>
        <BrowserRouter>
             <Routes>
                 <Route path="/" element={<MainPage />} />
@@ -18,7 +19,7 @@ function App() {
             </Routes>
         </BrowserRouter>
       
-        
+        </ErrorBoundary>
       </header>
     </div>
   );

@@ -42,7 +42,6 @@ router.post('/delete_user', async (req, res) => {
 
 router.get('/get_user/:id', async (req, res) => {
   const id = req.params.id;
-  console.log("id in server", id);
 
    try {
      const info = await User.findById({ _id: id });
@@ -55,10 +54,7 @@ router.get('/get_user/:id', async (req, res) => {
 })
 
 router.post('/update_user/:id', async (req, res) => {
-  //const {FirstName, LastName,Sex, Age, Password} = req.body;
-  //const updateUser = new User();
-  //Object.assign(updateUser, {FirstName, LastName,Sex, Age,Password});
-  console.log(req.params.id, req.body, "test----4k")
+  
   const id = req.params.id;
 
    try {

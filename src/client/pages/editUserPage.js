@@ -19,7 +19,7 @@ const EditUserPage = () => {
         
         const fetchData = async () => {
             const result = await axios(`http://localhost:3002/users/get_user/${index}`);
-            console.log(result,"rest.......")
+           // console.log(result,"rest.......")
             setFirstName(result.data.FirstName);
             setLastName(result.data.LastName);
             setSex(result.data.Sex);
@@ -40,12 +40,10 @@ const EditUserPage = () => {
             _id:index
         }
 
-
         updateUser(dispatch)(newUser);
         window.alert("You are successful update user info!");
         navigate("/");
     }
-
 
     return (
         <>

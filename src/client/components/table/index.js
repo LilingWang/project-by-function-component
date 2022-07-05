@@ -1,11 +1,9 @@
 import { useSelector } from 'react-redux';
-import {MdOutlineModeEdit, MdRestoreFromTrash} from "react-icons/md";
+import TableCol from '../tableCol';
 
 const Table = ({ userList, handleEditBtn, handleDeleteBtn }) => {
     
-    const testReducer = useSelector((state) => state);
-    console.log("testReducer....",testReducer);
-
+   // const testReducer = useSelector((state) => state);
     /* const users = userList && userList.map((user, index) =>{
          return (
              <tableCol
@@ -21,14 +19,12 @@ const Table = ({ userList, handleEditBtn, handleDeleteBtn }) => {
     const users = userList && userList.map((userData, index) => {
 
         return (
-            <tr key={index}>
-                <td onClick={handleEditBtn(userData._id)}><button style={{ border: 'none', color: '#53c5eb', fontWeight: 'bold '}}><MdOutlineModeEdit/>Edit</button></td>
-                <td onClick={handleDeleteBtn(userData._id)}><button style={{ border: 'none', color: '#53c5eb', fontWeight: 'bold '}}><MdRestoreFromTrash/>Delete</button></td>
-                <td>{userData.FirstName}</td>
-                <td>{userData.LastName}</td>
-                <td>{userData.Sex}</td>
-                <td>{userData.Age}</td>
-            </tr>
+            <TableCol 
+                userData = {userData}
+                index = {index}
+                handleEditBtn={handleEditBtn}
+                handleDeleteBtn={handleDeleteBtn}
+            />
         )
     })
     return users;
